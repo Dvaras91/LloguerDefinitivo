@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GIRES Location de matériel</string>
+    <string name="entregades">Comandadas livrés</string>
+    <string name="pendents">" Boucles d'oreilles comandas à collectionner"</string>
+</resources>

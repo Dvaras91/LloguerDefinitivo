@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Alquiler Material GIRES</string>
+    <string name="entregades">Comandas entregadas</string>
+    <string name="pendents">Comandas pendientes de recoger</string>
+    <string name="data">Fecha de devolución</string>
+    <string name="Borrar">Borrar</string>
+    <string name="Confirmar">Confirmar</string>
+    <string name="precio_alquiler">Precio alquiler</string>
+    <string name="LlistaMaterial">Lista de material</string>
+    <string name="Preu">Precio a pagar:</string>
+</resources>

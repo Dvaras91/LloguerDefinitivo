@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="entregades">"Orders delivered "</string>
+    <string name="pendents">Orders to collect</string>
+    <string name="data">Return date</string>
+    <string name="Borrar">Erase</string>
+    <string name="Confirmar">Confirm</string>
+    <string name="precio_alquiler">Rental price</string>
+    <string name="LlistaMaterial">Material list</string>
+    <string name="Preu">Price to pay</string>
+    <string name="app_name">GIRES Material rental</string>
+</resources>

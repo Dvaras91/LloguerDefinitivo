@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Lloguer Material GIRES</string>
+    <string name="entregades">Comandes Entregades</string>
+    <string name="pendents">Comandes pendents de recollir</string>
+    <string name="data">Data tornada:</string>
+    <string name="Borrar">Borrar</string>
+    <string name="Confirmar">Confirmar</string>
+    <string name="precio_alquiler">Preu Lloguer</string>
+    <string name="LlistaMaterial">Llistat de Material:</string>
+    <string name="Preu">Preu a pagar:</string>
+</resources>
