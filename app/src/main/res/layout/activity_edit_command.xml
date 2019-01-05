@@ -73,6 +73,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="16dp"
         android:background="@android:color/holo_blue_light"
+        android:onClick="addItems"
         android:text="+"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

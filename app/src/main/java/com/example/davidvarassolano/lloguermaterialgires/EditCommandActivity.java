@@ -72,4 +72,8 @@ public class EditCommandActivity extends AppCompatActivity {
         finish();
         Toast.makeText(EditCommandActivity.this,"hola",Toast.LENGTH_SHORT).show();
     }
+
+    public void addItems(View view) {
+
+    }
 }
