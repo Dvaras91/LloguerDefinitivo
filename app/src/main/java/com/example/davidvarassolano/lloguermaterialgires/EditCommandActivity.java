@@ -22,6 +22,7 @@ public class EditCommandActivity extends AppCompatActivity {
 
     private ArrayAdapter<String> adapter;
     private ArrayList<String> listItems;
+    private static final int EDIT_NAME = 1; //Anar a ListMaterialActivity per sel·lecionar més items a la comanda
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     Intent intent;
@@ -74,6 +75,8 @@ public class EditCommandActivity extends AppCompatActivity {
     }
 
     public void addItems(View view) {
+        Intent intent = new Intent(this,ListMaterialActivity.class);
+        startActivityForResult(intent,EDIT_NAME);
 
     }
 }
