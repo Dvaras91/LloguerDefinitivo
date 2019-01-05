@@ -75,8 +75,13 @@ public class EditCommandActivity extends AppCompatActivity {
     }
 
     public void addItems(View view) {
+        //Afegir elements a la comanda
         Intent intent = new Intent(this,ListMaterialActivity.class);
         startActivityForResult(intent,EDIT_NAME);
 
+    }
+
+    public void deleteItems(View view) {
+        //El·liminar elements sel·lecionats de la llista
     }
 }

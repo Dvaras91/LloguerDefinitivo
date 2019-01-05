@@ -37,15 +37,15 @@
         android:layout_alignParentTop="true"
         android:layout_marginBottom="16dp"
         android:background="@android:color/holo_red_dark"
-        android:drawableStart="@android:drawable/ic_menu_delete"
         android:drawableLeft="@android:drawable/ic_menu_delete"
+        android:drawableStart="@android:drawable/ic_menu_delete"
+        android:onClick="deleteItems"
         android:text="@string/Borrar"
         android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_confirmar"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
- />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_confirmar"
