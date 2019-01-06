@@ -1,24 +1,41 @@
 package com.example.davidvarassolano.lloguermaterialgires;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EditCommandActivity extends AppCompatActivity {
+
+    private static final String USUARI = "usuari";
+    private static final String DATA = "data";
+    private static final String ENTREGA = "entrega";
+    private static final String NOM = "name";
+    private static final String NOMBRE = "nombre";
+    private static final String CANTIDAD = "cantidad";
 
     private AdaptListEditComand adapter;
     private static final int EDIT_NAME = 1; //Anar a ListMaterialActivity per sel·lecionar més items a la comanda
@@ -112,11 +129,55 @@ public class EditCommandActivity extends AppCompatActivity {
     }
 
     public void ConfirmComanda(View view) {
-        finish();
-        Toast.makeText(EditCommandActivity.this,"hola",Toast.LENGTH_SHORT).show();
+        final Calendar calendar = Calendar.getInstance();
+        int dia = calendar.get( Calendar.DAY_OF_MONTH);
+        int mes = calendar.get( Calendar.MONTH );
+        int ano = calendar.get( Calendar.YEAR );
+        DatePickerDialog datePickerDialog = new DatePickerDialog( EditCommandActivity.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+                guardaComanda(year, month, dayOfMonth);
+            }
+        },ano,mes,dia );
+        datePickerDialog.show();
     }
 
     private void guardaComanda(int year, int month, int dayOfMonth){
+        String fecha = dayOfMonth+"/"+(month+1)+"/"+year;
+        Intent data = new Intent(  );
+        data.putExtra( "fecha",fecha );
+        setResult( RESULT_OK,data );
+
+        WriteBatch batch = db.batch();
+
+        DocumentReference comRef = db.collection( "Comandas" ).document( nomcomanda );
+
+        Map<String,Object> comand = new HashMap<>(  );
+        comand.put( USUARI,"paco" );
+        comand.put( DATA,fecha );
+        comand.put( ENTREGA,false );
+        comand.put( NOM,nomcomanda );
+        batch.set(comRef, comand);
+
+        for (int d = 0;d < listmaterial.size(); d++) {
+            Map<String,Object> items = new HashMap<>(  );
+            items.put( NOMBRE, listmaterial.get( d ).getText() );
+            items.put( CANTIDAD, listmaterial.get( d ).getNumlloguer() );
+            batch.set(comRef.collection("items").document(), items);
+        }
+
+        batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                finish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(EditCommandActivity.this,"Error!",Toast.LENGTH_SHORT).show();
+                Log.d("ERROR",e.toString());
+            }
+        });
 
     }
 
