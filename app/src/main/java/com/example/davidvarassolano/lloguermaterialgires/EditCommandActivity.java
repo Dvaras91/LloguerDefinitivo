@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ListView;
@@ -83,6 +84,13 @@ public class EditCommandActivity extends AppCompatActivity {
         //listItems.add("Arnes");
         adapter = new AdaptListEditComand(this,android.R.layout.simple_list_item_1,listmaterial);
         listItem.setAdapter(adapter);
+        listItem.setOnItemClickListener( new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
+                listmaterial.get( pos ).toggleChecked();
+                adapter.notifyDataSetChanged();
+            }
+        } );
 
     }
 
