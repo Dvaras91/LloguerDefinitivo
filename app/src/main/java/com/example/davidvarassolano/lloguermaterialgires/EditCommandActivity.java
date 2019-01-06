@@ -20,10 +20,10 @@ import java.util.ArrayList;
 
 public class EditCommandActivity extends AppCompatActivity {
 
-    private ArrayAdapter<String> adapter;
-    private ArrayList<String> listItems;
+    private AdaptListEditComand adapter;
     private static final int EDIT_NAME = 1; //Anar a ListMaterialActivity per sel·lecionar més items a la comanda
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private ArrayList<Itemcomandprop> listmaterial;
 
     Intent intent;
     TextView Nomcomanda;
@@ -51,20 +51,20 @@ public class EditCommandActivity extends AppCompatActivity {
                             Log.e("LloguerMaterialGires","Firestore Error "+e.toString());
                             return;
                         }
-                        listItems.clear();
+                        listmaterial.clear();
                         for (DocumentSnapshot doc: documentSnapshots){
-                            listItems.add(doc.getString("nombre"));
+                            listmaterial.add(new Itemcomandprop(doc.getString("nombre"),doc.getDouble("cantidad").intValue()));
                         }
                         adapter.notifyDataSetChanged();
                     }
                 });
 
 
-        listItems = new ArrayList<>();
+        listmaterial = new ArrayList<>();
         //listItems.add("Casc");
         //listItems.add("Neopreno");
         //listItems.add("Arnes");
-        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,listItems);
+        adapter = new AdaptListEditComand(this,android.R.layout.simple_list_item_1,listmaterial);
         listItem.setAdapter(adapter);
 
     }
@@ -81,7 +81,31 @@ public class EditCommandActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case EDIT_NAME:
+                if (resultCode==RESULT_OK){
+                    ArrayList<String> material = new ArrayList<>(  );
+                    material = data.getStringArrayListExtra( "material" );
+                    int i = 0;
+                    while (i<material.size()){
+                        listmaterial.add( new Itemcomandprop( material.get( i ) ) );
+                        i++;
+
+                    }
+                    //noumaterial = data.getStringExtra( "material" );
+                    //listmaterial.add(new Itemcomandprop( noumaterial ));
+
+                    adapter.notifyDataSetChanged();
+                    listItem.smoothScrollToPosition( listmaterial.size()-1 );
+                }
+            default:
+                super.onActivityResult( requestCode, resultCode, data );
+        }}
+
     public void deleteItems(View view) {
         //El·liminar elements sel·lecionats de la llista
     }
+
 }
