@@ -23,6 +23,7 @@ public class Itemcomandprop {
     public Itemcomandprop(String text, int numtotal) {
         this.text = text;
         this.numtotal = numtotal;
+        this.numlloguer = 1;
         //this.checked=false;
     }
 
