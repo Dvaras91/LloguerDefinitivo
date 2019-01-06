@@ -32,7 +32,6 @@ public class AdaptListEditComand extends ArrayAdapter {
         item_comand.setText( item.getText() );
         item_comand.setChecked( item.isChecked() );
         String cantidad = Integer.toString(item.getNumtotal());
-        int prueba = 3;
         item_quantitat.setText( cantidad);
         return result;
     }
