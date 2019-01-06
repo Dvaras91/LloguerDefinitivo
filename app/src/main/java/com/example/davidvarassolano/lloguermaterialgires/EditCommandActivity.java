@@ -69,11 +69,6 @@ public class EditCommandActivity extends AppCompatActivity {
 
     }
 
-    public void ConfirmComanda(View view) {
-        finish();
-        Toast.makeText(EditCommandActivity.this,"hola",Toast.LENGTH_SHORT).show();
-    }
-
     public void addItems(View view) {
         //Afegir elements a la comanda
         Intent intent = new Intent(this,ListMaterialActivity.class);
@@ -105,7 +100,24 @@ public class EditCommandActivity extends AppCompatActivity {
         }}
 
     public void deleteItems(View view) {
-        //El·liminar elements sel·lecionats de la llista
+        int i = 0;
+        while (i<listmaterial.size()){
+            if (listmaterial.get( i ).isChecked()){
+                listmaterial.remove( i );
+            } else {
+                i++;
+            }
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    public void ConfirmComanda(View view) {
+        finish();
+        Toast.makeText(EditCommandActivity.this,"hola",Toast.LENGTH_SHORT).show();
+    }
+
+    private void guardaComanda(int year, int month, int dayOfMonth){
+
     }
 
 }
