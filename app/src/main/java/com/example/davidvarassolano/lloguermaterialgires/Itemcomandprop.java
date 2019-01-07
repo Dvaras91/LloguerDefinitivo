@@ -4,7 +4,21 @@ public class Itemcomandprop {
 
     private String text;
     private boolean checked;
-    private int numlloguer, numtotal;
+    private int numlloguer, numtotal,precio;
+
+    public Itemcomandprop(String text, int numtotal, int precio) {
+        this.text = text;
+        this.numtotal = numtotal;
+        this.precio = precio;
+    }
+
+    public int getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(int precio) {
+        this.precio = precio;
+    }
 
     public Itemcomandprop(String text) {
         this.text = text;

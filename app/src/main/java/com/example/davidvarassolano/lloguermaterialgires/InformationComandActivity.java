@@ -25,7 +25,7 @@ public class InformationComandActivity extends AppCompatActivity {
     private AdapListInformation adapter;
 
     Intent intent;
-    TextView Nomcomanda;
+    TextView Nomcomanda,Precio;
     String nomcomanda,id;
     ListView listmaterial;
 
@@ -36,6 +36,7 @@ public class InformationComandActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_information_comand);
         Nomcomanda = findViewById(R.id.lbl_nom);
+        Precio = findViewById(R.id.lbl_euro);
         listmaterial = findViewById(R.id.list_material);
         intent = getIntent();
         if (intent!=null){
@@ -54,9 +55,17 @@ public class InformationComandActivity extends AppCompatActivity {
                 }
                 listItems.clear();
                 for (DocumentSnapshot doc: documentSnapshots){
-                    listItems.add(new Itemcomandprop(doc.getString("nombre"),doc.getDouble("cantidad").intValue()));
+                    listItems.add(new Itemcomandprop(doc.getString("nombre"),doc.getDouble("cantidad").intValue(),doc.getDouble("precio").intValue()));
                 }
                 adapter.notifyDataSetChanged();
+                int i = 0;
+                int preu= 0;
+                while (i<listItems.size()){
+                      preu = preu +listItems.get(i).getNumtotal()*listItems.get(i).getPrecio();
+                      i = i + 1;
+                }
+                String preucomanda = Integer.toString(preu);
+                Precio.setText(preucomanda);
             }
         });
 
@@ -66,6 +75,8 @@ public class InformationComandActivity extends AppCompatActivity {
         //listItems.add("Mosquetons HMS");
         adapter = new AdapListInformation(this,R.layout.itemreturn,listItems);
         listmaterial.setAdapter(adapter);
+
+
 
 
     }

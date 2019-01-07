@@ -147,6 +147,7 @@ public class EditCommandActivity extends AppCompatActivity {
                 guardaComanda(year, month, dayOfMonth);
             }
         },ano,mes,dia );
+        Toast.makeText(this,nomcomanda,Toast.LENGTH_SHORT).show();
         datePickerDialog.show();
     }
 
@@ -158,8 +159,10 @@ public class EditCommandActivity extends AppCompatActivity {
 
         WriteBatch batch = db.batch();
 
-        DocumentReference comRef = db.collection( "Comandas" ).document( nomcomanda );
 
+        DocumentReference comRef = db.collection( "Comandas" ).document( nomcomanda );
+        //comRef.collection("items").document().delete(); //Prova per el·liminar tots el
+        Toast.makeText(this,"borra",Toast.LENGTH_SHORT).show();
         Map<String,Object> comand = new HashMap<>(  );
         comand.put( USUARI,"paco" );
         comand.put( DATA,fecha );
