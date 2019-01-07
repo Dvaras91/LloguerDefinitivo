@@ -190,5 +190,14 @@ public class NormalUserActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case EDIT_NAME:
+                if (resultCode==RESULT_OK){
+                    adapterrec.notifyDataSetChanged();
+                }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

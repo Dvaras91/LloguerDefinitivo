@@ -169,6 +169,7 @@ public class EditCommandActivity extends AppCompatActivity {
 
         for (int d = 0;d < listmaterial.size(); d++) {
             Map<String,Object> items = new HashMap<>(  );
+
             items.put( NOMBRE, listmaterial.get( d ).getText() );
             items.put( CANTIDAD, listmaterial.get( d ).getNumlloguer() );
             batch.set(comRef.collection("items").document(), items);
@@ -177,6 +178,8 @@ public class EditCommandActivity extends AppCompatActivity {
         batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                Intent data = new Intent();
+                setResult(RESULT_OK,data);
                 finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
