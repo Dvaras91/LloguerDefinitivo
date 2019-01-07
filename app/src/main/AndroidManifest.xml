@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".EditCommandActivity" />
         <activity android:name=".ListMaterialActivity" />
-        <activity android:name=".InformationComandActivity"></activity>
+        <activity android:name=".InformationComandActivity" />
+        <activity android:name=".AccesUserActivity"></activity>
     </application>
 
 </manifest>
