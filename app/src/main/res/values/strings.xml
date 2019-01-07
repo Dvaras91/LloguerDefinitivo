@@ -11,4 +11,6 @@
     <string name="Usuari">Usuari</string>
     <string name="Contrasenya">Contrasenya</string>
     <string name="Entra">Entra</string>
+    <string name="user">Usuari:</string>
+    <string name="Pass">Contrasenya:</string>
 </resources>
