@@ -8,4 +8,7 @@
     <string name="precio_alquiler">Preu Lloguer</string>
     <string name="LlistaMaterial">Llistat de Material:</string>
     <string name="Preu">Preu a pagar:</string>
+    <string name="Usuari">Usuari</string>
+    <string name="Contrasenya">Contrasenya</string>
+    <string name="Entra">Entra</string>
 </resources>
