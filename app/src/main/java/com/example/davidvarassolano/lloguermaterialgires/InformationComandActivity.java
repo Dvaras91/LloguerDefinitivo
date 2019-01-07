@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,8 +21,8 @@ import java.util.ArrayList;
 public class InformationComandActivity extends AppCompatActivity {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private ArrayList<String> listItems;
-    private ArrayAdapter<String> adapter;
+    private ArrayList<Itemcomandprop> listItems;
+    private AdapListInformation adapter;
 
     Intent intent;
     TextView Nomcomanda;
@@ -53,7 +54,7 @@ public class InformationComandActivity extends AppCompatActivity {
                 }
                 listItems.clear();
                 for (DocumentSnapshot doc: documentSnapshots){
-                    listItems.add(doc.getString("nombre"));
+                    listItems.add(new Itemcomandprop(doc.getString("nombre"),doc.getDouble("cantidad").intValue()));
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -63,7 +64,7 @@ public class InformationComandActivity extends AppCompatActivity {
         //listItems.add("Casc");
         //listItems.add("Dissipador");
         //listItems.add("Mosquetons HMS");
-        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,listItems);
+        adapter = new AdapListInformation(this,R.layout.itemreturn,listItems);
         listmaterial.setAdapter(adapter);
 
 
