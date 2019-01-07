@@ -28,6 +28,8 @@ public class ListCRecollirAdapt extends ArrayAdapter<Comanda> {
         TextView Nomcomanda = (TextView) result.findViewById(R.id.lbl_nom);
         Comanda com = getItem(position);
         Nomcomanda.setText(com.name);
+        TextView Datarecollida = (TextView) result.findViewById(R.id.lbl_dia);
+        Datarecollida.setText(com.data);
         //String nom = getItem(position).toString();
         //Nomcomanda.setText(nom);
         return result;
