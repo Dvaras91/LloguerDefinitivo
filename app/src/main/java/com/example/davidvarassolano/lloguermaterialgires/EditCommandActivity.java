@@ -1,6 +1,8 @@
 package com.example.davidvarassolano.lloguermaterialgires;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -111,6 +113,7 @@ public class EditCommandActivity extends AppCompatActivity {
                     material = data.getStringArrayListExtra( "material" );
                     int i = 0;
                     while (i<material.size()){
+
                         listmaterial.add( new Itemcomandprop( material.get( i ) ) );
                         i++;
 
@@ -216,6 +219,28 @@ public class EditCommandActivity extends AppCompatActivity {
                 Log.d("ERROR",e.toString());
             }
         });
+    }
+
+    //Metode per si cliques al botó enrere et pregunti si vols tancar l' activitat sense guardar la informació o vols seguir en l' activitat.
+    @Override
+    public void onBackPressed(){
+
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(this);
+        builder.setMessage("¿Estás seguro que deseas ir para atrás?");
+        builder.setTitle("Atención");
+        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                EditCommandActivity.super.onBackPressed();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.show();
     }
 
 }
