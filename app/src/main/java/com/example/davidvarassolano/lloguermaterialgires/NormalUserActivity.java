@@ -76,22 +76,7 @@ public class NormalUserActivity extends AppCompatActivity {
         });
 
         // comandes per recollir de la base de dades
-        db.collection("Comandas").whereEqualTo("entrega",false).whereEqualTo("usuari","paco").addSnapshotListener(this, new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                if (e!=null){
-                    Log.e("LloguerMaterialGires","Firestore Error:"+e.toString());
-                    return;
-                }
-                listcomrecollir.clear();
-                for (DocumentSnapshot doc: documentSnapshots){
-                    Comanda comanda = new Comanda(doc.getString("name"),doc.getString("usuari"),doc.getString("data"));
-                    comanda.setId(doc.getId());
-                    listcomrecollir.add(comanda);
-                }
-                adapterrec.notifyDataSetChanged();
-            }
-        });
+        RefreshListPrep();
         //listcomrecollir.add("Savassona");
         //listcomrecollir.add("Benasque");
         //listcomandes.add( "Cova Forat Mico" );
@@ -195,9 +180,28 @@ public class NormalUserActivity extends AppCompatActivity {
         switch (requestCode){
             case EDIT_NAME:
                 if (resultCode==RESULT_OK){
-                    adapterrec.notifyDataSetChanged();
+                    RefreshListPrep();
                 }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+    public void RefreshListPrep(){
+        // comandes per recollir de la base de dades
+        db.collection("Comandas").whereEqualTo("entrega",false).whereEqualTo("usuari","paco").addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                if (e!=null){
+                    Log.e("LloguerMaterialGires","Firestore Error:"+e.toString());
+                    return;
+                }
+                listcomrecollir.clear();
+                for (DocumentSnapshot doc: documentSnapshots){
+                    Comanda comanda = new Comanda(doc.getString("name"),doc.getString("usuari"),doc.getString("data"));
+                    comanda.setId(doc.getId());
+                    listcomrecollir.add(comanda);
+                }
+                adapterrec.notifyDataSetChanged();
+            }
+        });
     }
 }

@@ -60,6 +60,7 @@ public class EditCommandActivity extends AppCompatActivity {
             id = intent.getStringExtra("id");
             Nomcomanda.setText("Nom de la comanda: " +nomcomanda);
         }
+        Toast.makeText(EditCommandActivity.this,id,Toast.LENGTH_SHORT).show();
 
         db.collection("Comandas").document(id).collection("items").addSnapshotListener(this
                 , new EventListener<QuerySnapshot>() {
@@ -152,17 +153,40 @@ public class EditCommandActivity extends AppCompatActivity {
     }
 
     private void guardaComanda(int year, int month, int dayOfMonth){
-        String fecha = dayOfMonth+"/"+(month+1)+"/"+year;
-        Intent data = new Intent(  );
-        data.putExtra( "fecha",fecha );
-        setResult( RESULT_OK,data );
+        final String fecha = dayOfMonth+"/"+(month+1)+"/"+year;
+        //Intent data = new Intent(  );
+        //data.putExtra( "fecha",fecha );
+        //setResult( RESULT_OK,data );
 
-        WriteBatch batch = db.batch();
+        final WriteBatch batch = db.batch();
 
 
-        DocumentReference comRef = db.collection( "Comandas" ).document( nomcomanda );
+        final DocumentReference comRef = db.collection( "Comandas" ).document( id );
         //comRef.collection("items").document().delete(); //Prova per el·liminar tots el
-        Toast.makeText(this,"borra",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"borra",Toast.LENGTH_SHORT).show();
+        batch.delete(comRef);
+        batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                CompleteEraseDocument(fecha);
+                //Intent data = new Intent();
+                //data.putExtra( "fecha",fecha );
+                //setResult(RESULT_OK,data);
+                //finish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(EditCommandActivity.this,"Error!",Toast.LENGTH_SHORT).show();
+                Log.d("ERROR",e.toString());
+            }
+        });
+
+
+    }
+    public void CompleteEraseDocument(String fecha){
+        DocumentReference comRef = db.collection( "Comandas" ).document(  );
+        WriteBatch batch = db.batch();
         Map<String,Object> comand = new HashMap<>(  );
         comand.put( USUARI,"paco" );
         comand.put( DATA,fecha );
@@ -192,7 +216,6 @@ public class EditCommandActivity extends AppCompatActivity {
                 Log.d("ERROR",e.toString());
             }
         });
-
     }
 
 }
