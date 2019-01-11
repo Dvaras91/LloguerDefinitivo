@@ -84,14 +84,7 @@ public class EditCommandActivity extends AppCompatActivity {
                             //listmaterial.add(new Itemcomandprop(doc.getString("nombre"),doc.getDouble("cantidad").intValue()));
                         }
                         adapter.notifyDataSetChanged();
-                        int i = 0;
-                        int preu = 0;
-                        while (i<listmaterial.size()){
-                            preu = preu + listmaterial.get(i).getNumtotal()*listmaterial.get(i).getPrecio();
-                            i = i + 1;
-                        }
-                        String preucomanda = Integer.toString(preu);
-                        Preu.setText(preucomanda+"€");
+                        modificarpreutotal();
 
                     }
                 });
@@ -147,6 +140,8 @@ public class EditCommandActivity extends AppCompatActivity {
 
                     adapter.notifyDataSetChanged();
                     listItem.smoothScrollToPosition( listmaterial.size()-1 );
+
+                    modificarpreutotal();   //actualitzem el preu del textview
                 }
             default:
                 super.onActivityResult( requestCode, resultCode, data );
@@ -162,6 +157,7 @@ public class EditCommandActivity extends AppCompatActivity {
             }
         }
         adapter.notifyDataSetChanged();
+        modificarpreutotal(); //actualitzem el preu del textview
     }
 
     public void ConfirmComanda(View view) {
@@ -266,6 +262,18 @@ public class EditCommandActivity extends AppCompatActivity {
             }
         });
         builder.show();
+    }
+
+    //Metode que ens servirà per modificar el contingut del textview que ens mostra en tot moment el preu de la nostra comanda.
+    public void modificarpreutotal (){
+        int i = 0;
+        int preu = 0;
+        while (i<listmaterial.size()){
+            preu = preu + listmaterial.get(i).getNumtotal()*listmaterial.get(i).getPrecio();
+            i = i + 1;
+        }
+        String preucomanda = Integer.toString(preu);
+        Preu.setText(preucomanda+"€");
     }
 
 }
