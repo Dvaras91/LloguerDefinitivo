@@ -65,7 +65,7 @@ public class InformationComandActivity extends AppCompatActivity {
                       i = i + 1;
                 }
                 String preucomanda = Integer.toString(preu);
-                Precio.setText(preucomanda);
+                Precio.setText(preucomanda+"€");
             }
         });
 

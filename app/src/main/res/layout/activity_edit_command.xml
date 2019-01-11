@@ -103,4 +103,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lbl_nomcomanda" />
 
+    <TextView
+        android:id="@+id/lbl_preupagar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/lbl_price"
+        app:layout_constraintStart_toEndOf="@+id/lbl_price"
+        tools:text="10€" />
+
 </android.support.constraint.ConstraintLayout>

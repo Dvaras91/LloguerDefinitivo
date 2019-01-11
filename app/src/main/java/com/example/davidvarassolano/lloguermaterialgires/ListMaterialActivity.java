@@ -42,7 +42,7 @@ public class ListMaterialActivity extends AppCompatActivity {
                 }
                 list_item.clear();
                 for (DocumentSnapshot doc: documentSnapshots){
-                    list_item.add(new Itemcomandprop(doc.getString("nombre"),doc.getDouble("cantidad").intValue()));
+                    list_item.add(new Itemcomandprop(doc.getString("nombre"),doc.getDouble("cantidad").intValue(),doc.getDouble("precio").intValue()));
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -72,17 +72,28 @@ public class ListMaterialActivity extends AppCompatActivity {
     public void confirmItems(View view) {
         int i = 0;
         ArrayList<String> material;
+        ArrayList<Integer> cantidad, precio;
         material = new ArrayList<>(  );
+        cantidad = new ArrayList<>();
+        precio = new ArrayList<>();
+        //ArrayList<Itemcomandprop> addmaterial; Pasar un objecte sencer, potser ho podem fer en futures versions (Parcelable)
+        //addmaterial = new ArrayList<>();
 
         Intent data = new Intent(  );
 
         while (i<list_item.size()){
             if (list_item.get( i ).isChecked()){
                 material.add( list_item.get( i ).getText() );
+                cantidad.add(list_item.get(i).getNumlloguer());
+                precio.add(list_item.get(i).getPrecio());
             }
             i++;
         }
         data.putExtra( "material", material);
+        data.putExtra("cantidad",cantidad);
+        data.putExtra("precio",precio);
+
+
         setResult( RESULT_OK,data );
         finish();
     }

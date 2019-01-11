@@ -10,6 +10,8 @@ public class Itemcomandprop {
         this.text = text;
         this.numtotal = numtotal;
         this.precio = precio;
+        this.numlloguer = 1;
+
     }
 
     public int getPrecio() {

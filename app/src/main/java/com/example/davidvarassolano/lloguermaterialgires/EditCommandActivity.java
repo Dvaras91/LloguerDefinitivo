@@ -39,6 +39,7 @@ public class EditCommandActivity extends AppCompatActivity {
     private static final String NOM = "name";
     private static final String NOMBRE = "nombre";
     private static final String CANTIDAD = "cantidad";
+    private static final String PRECIOITEM = "precio";
 
     private AdaptListEditComand adapter;
     private static final int EDIT_NAME = 1; //Anar a ListMaterialActivity per sel·lecionar més items a la comanda
@@ -46,7 +47,7 @@ public class EditCommandActivity extends AppCompatActivity {
     private ArrayList<Itemcomandprop> listmaterial;
 
     Intent intent;
-    TextView Nomcomanda;
+    TextView Nomcomanda, Preu;
     String nomcomanda,id;
     ListView listItem;
 
@@ -54,8 +55,12 @@ public class EditCommandActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_command);
+        //Referències:
         Nomcomanda = findViewById(R.id.lbl_nomcomanda);
         listItem = findViewById(R.id.list_items);
+        Preu = findViewById(R.id.lbl_preupagar);
+
+        //Info que ve de l' activitat NormalUser:
         intent = getIntent();
         if (intent != null){
             nomcomanda = intent.getStringExtra("name");
@@ -64,6 +69,7 @@ public class EditCommandActivity extends AppCompatActivity {
         }
         Toast.makeText(EditCommandActivity.this,id,Toast.LENGTH_SHORT).show();
 
+        //Carreguem comanda de la base de dades:
         db.collection("Comandas").document(id).collection("items").addSnapshotListener(this
                 , new EventListener<QuerySnapshot>() {
                     @Override
@@ -74,9 +80,19 @@ public class EditCommandActivity extends AppCompatActivity {
                         }
                         listmaterial.clear();
                         for (DocumentSnapshot doc: documentSnapshots){
-                            listmaterial.add(new Itemcomandprop(doc.getString("nombre"),doc.getDouble("cantidad").intValue()));
+                            listmaterial.add(new Itemcomandprop(doc.getString("nombre"),doc.getDouble("cantidad").intValue(),doc.getDouble("precio").intValue()));
+                            //listmaterial.add(new Itemcomandprop(doc.getString("nombre"),doc.getDouble("cantidad").intValue()));
                         }
                         adapter.notifyDataSetChanged();
+                        int i = 0;
+                        int preu = 0;
+                        while (i<listmaterial.size()){
+                            preu = preu + listmaterial.get(i).getNumtotal()*listmaterial.get(i).getPrecio();
+                            i = i + 1;
+                        }
+                        String preucomanda = Integer.toString(preu);
+                        Preu.setText(preucomanda+"€");
+
                     }
                 });
 
@@ -110,11 +126,19 @@ public class EditCommandActivity extends AppCompatActivity {
             case EDIT_NAME:
                 if (resultCode==RESULT_OK){
                     ArrayList<String> material = new ArrayList<>(  );
+                    ArrayList<Integer> cantidad,precio;
+                    cantidad = new ArrayList<>();
+                    precio = new ArrayList<>();
+
                     material = data.getStringArrayListExtra( "material" );
+                    //ArrayList<Itemcomandprop> materialnew = new ArrayList<>(data.getParcelableArrayListExtra("materialnew"));
+                    cantidad = data.getIntegerArrayListExtra("cantidad");
+                    precio = data.getIntegerArrayListExtra("precio");
+
                     int i = 0;
                     while (i<material.size()){
 
-                        listmaterial.add( new Itemcomandprop( material.get( i ) ) );
+                        listmaterial.add( new Itemcomandprop( material.get( i ) ,cantidad.get(i),precio.get(i)) );
                         i++;
 
                     }
@@ -201,7 +225,8 @@ public class EditCommandActivity extends AppCompatActivity {
             Map<String,Object> items = new HashMap<>(  );
 
             items.put( NOMBRE, listmaterial.get( d ).getText() );
-            items.put( CANTIDAD, listmaterial.get( d ).getNumlloguer() );
+            items.put( CANTIDAD, listmaterial.get( d ).getNumtotal() );
+            items.put(PRECIOITEM,listmaterial.get(d).getPrecio());
             batch.set(comRef.collection("items").document(), items);
         }
 
