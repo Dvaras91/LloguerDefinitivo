@@ -6,6 +6,13 @@ public class Itemcomandprop {
     private boolean checked;
     private int numlloguer, numtotal,precio;
 
+    public Itemcomandprop(String text, int numlloguer, int numtotal, int precio) {
+        this.text = text;
+        this.numlloguer = numlloguer;
+        this.numtotal = numtotal;
+        this.precio = precio;
+    }
+
     public Itemcomandprop(String text, int numtotal, int precio) {
         this.text = text;
         this.numtotal = numtotal;

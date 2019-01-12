@@ -21,8 +21,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -199,14 +201,16 @@ public class EditCommandActivity extends AppCompatActivity {
             case EDIT_NAME:
                 if (resultCode==RESULT_OK){
                     ArrayList<String> material = new ArrayList<>(  );
-                    ArrayList<Integer> cantidad,precio;
+                    ArrayList<Integer> cantidad,precio,cantidadtotal;
                     cantidad = new ArrayList<>();
                     precio = new ArrayList<>();
+                    cantidadtotal = new ArrayList<>();
 
                     material = data.getStringArrayListExtra( "material" );
                     //ArrayList<Itemcomandprop> materialnew = new ArrayList<>(data.getParcelableArrayListExtra("materialnew"));
                     cantidad = data.getIntegerArrayListExtra("cantidad");
                     precio = data.getIntegerArrayListExtra("precio");
+                    cantidadtotal = data.getIntegerArrayListExtra("ctotal");
 
                     int i = 0;
                     boolean coincide = false;
@@ -220,7 +224,7 @@ public class EditCommandActivity extends AppCompatActivity {
                             }
                         }
                         if (!coincide){
-                        listmaterial.add( new Itemcomandprop( material.get( i ) ,cantidad.get(i),precio.get(i)) );}
+                        listmaterial.add( new Itemcomandprop( material.get( i ) ,cantidad.get(i),cantidadtotal.get(i),precio.get(i)) );}
                         i++;
 
                     }
@@ -248,6 +252,21 @@ public class EditCommandActivity extends AppCompatActivity {
         }
         adapter.notifyDataSetChanged();
         modificarpreutotal(); //actualitzem el preu del textview
+        /*db.collection("Catalogo").whereEqualTo("nombre","Dissipador").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+
+                    QuerySnapshot document = task.getResult();
+                    Toast.makeText(EditCommandActivity.this,Double.toString(document.getDocuments().get(0).getDouble("cantidad")),Toast.LENGTH_SHORT).show();
+                    //document.getDocuments().get(0).getDouble("cantidad");
+                    //Toast.makeText(EditCommandActivity.this,document.getString("cantidad")
+
+                } else {
+                    Log.d("LloguerMaterialGires",task.getException().toString());
+                }
+            }
+        });*/
     }
 
     public void ConfirmComanda(View view) {
@@ -371,6 +390,7 @@ public class EditCommandActivity extends AppCompatActivity {
         modificar.setTitle("Modificar quantitat de material")
                 .setMessage("Posa la nova quantitat que vols llogar:");
         final EditText edquantitat = new EditText(this);
+        final int quant=1;
         edquantitat.setInputType(InputType.TYPE_CLASS_NUMBER);
         modificar.setView(edquantitat);
         modificar.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
@@ -380,10 +400,32 @@ public class EditCommandActivity extends AppCompatActivity {
                 if (quantitat.isEmpty()){
                     return;
                 } else {
-                Toast.makeText(EditCommandActivity.this,edquantitat.getText().toString(),Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(EditCommandActivity.this,edquantitat.getText().toString(),Toast.LENGTH_SHORT).show();
+                        String nommaterial = listmaterial.get(position).getText().toString();
+                    db.collection("Catalogo").whereEqualTo("nombre",nommaterial).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()){
 
-                listmaterial.get(position).setNumtotal(Integer.parseInt(edquantitat.getText().toString()));
-                adapter.notifyDataSetChanged();
+                                QuerySnapshot document = task.getResult();
+                                Toast.makeText(EditCommandActivity.this,Double.toString(document.getDocuments().get(0).getDouble("cantidad")),Toast.LENGTH_SHORT).show();
+                                //document.getDocuments().get(0).getDouble("cantidad");
+                                //Toast.makeText(EditCommandActivity.this,document.getString("cantidad")
+                                int quant =  document.getDocuments().get(0).getDouble("cantidad").intValue();
+                                if (quant>=Integer.parseInt(edquantitat.getText().toString())){
+                                    listmaterial.get(position).setNumtotal(Integer.parseInt(edquantitat.getText().toString()));
+                                    adapter.notifyDataSetChanged();
+                                } else {
+                                    Toast.makeText(EditCommandActivity.this,"Has sobrepassat la quantitat màxima",Toast.LENGTH_SHORT).show();
+                                }
+
+                            } else {
+                                Log.d("LloguerMaterialGires",task.getException().toString());
+                            }
+                        }
+                    });
+
+
                 }
 
             }

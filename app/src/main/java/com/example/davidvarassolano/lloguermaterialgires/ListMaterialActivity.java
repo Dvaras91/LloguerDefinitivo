@@ -77,10 +77,11 @@ public class ListMaterialActivity extends AppCompatActivity {
     public void confirmItems(View view) {
         int i = 0;
         ArrayList<String> material;
-        ArrayList<Integer> cantidad, precio;
+        ArrayList<Integer> cantidad, precio, cantidadtotal;
         material = new ArrayList<>(  );
         cantidad = new ArrayList<>();
         precio = new ArrayList<>();
+        cantidadtotal = new ArrayList<>();
         //ArrayList<Itemcomandprop> addmaterial; Pasar un objecte sencer, potser ho podem fer en futures versions (Parcelable)
         //addmaterial = new ArrayList<>();
 
@@ -91,12 +92,14 @@ public class ListMaterialActivity extends AppCompatActivity {
                 material.add( list_item.get( i ).getText() );
                 cantidad.add(list_item.get(i).getNumlloguer());
                 precio.add(list_item.get(i).getPrecio());
+                cantidadtotal.add(list_item.get(i).getNumtotal());
             }
             i++;
         }
         data.putExtra( "material", material);
         data.putExtra("cantidad",cantidad);
         data.putExtra("precio",precio);
+        data.putExtra("ctotal",cantidadtotal);
 
 
         setResult( RESULT_OK,data );
