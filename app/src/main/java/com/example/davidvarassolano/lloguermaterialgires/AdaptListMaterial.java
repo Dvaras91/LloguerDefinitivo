@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
@@ -25,9 +26,32 @@ public class AdaptListMaterial extends ArrayAdapter<Itemcomandprop> {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             result = inflater.inflate(R.layout.itemllistmaterial,null);
         }
-        TextView txt_cantidad = result.findViewById(R.id.txt_quantitat);
+        final TextView txt_cantidad = result.findViewById(R.id.txt_quantitat);
         CheckBox item_check = result.findViewById(R.id.check_item);
-        Itemcomandprop item = getItem(position);
+        Button btn_add = result.findViewById(R.id.btn_add);
+        Button btn_res = result.findViewById(R.id.btn_rest);
+        final Itemcomandprop item = getItem(position);
+        btn_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (item.getNumlloguer()>=item.getNumtotal()){
+
+                } else {
+                item.setNumlloguer(item.getNumlloguer()+1);
+                txt_cantidad.setText(item.getNumlloguer()+"/"+item.getNumtotal());}
+            }
+        });
+        btn_res.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (item.getNumlloguer()<=0){
+
+                } else {
+                    item.setNumlloguer(item.getNumlloguer()-1);
+                    txt_cantidad.setText(item.getNumlloguer()+"/"+item.getNumtotal());}
+            }
+        });
+
         item_check.setText(item.getText());
         item_check.setChecked(item.isChecked());
         txt_cantidad.setText(item.getNumlloguer()+"/"+item.getNumtotal());

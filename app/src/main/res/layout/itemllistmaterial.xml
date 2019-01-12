@@ -9,16 +9,20 @@
     <CheckBox
         android:id="@+id/check_item"
         android:layout_width="0dp"
-        android:layout_height="?attr/listPreferredItemHeight"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginRight="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:clickable="false"
         android:focusable="false"
         android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/txt_quantitat"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_add"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Neopreno" />
 
     <TextView
@@ -31,4 +35,30 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/check_item"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="2/7" />
+
+    <Button
+        android:id="@+id/btn_rest"
+        android:layout_width="37dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:clickable="true"
+        android:focusable="false"
+        android:text="-"
+        app:layout_constraintEnd_toStartOf="@+id/txt_quantitat"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="8dp" />
+
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="37dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:clickable="true"
+        android:focusable="false"
+        android:text="+"
+        app:layout_constraintEnd_toStartOf="@+id/btn_rest"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="8dp" />
 </android.support.constraint.ConstraintLayout>

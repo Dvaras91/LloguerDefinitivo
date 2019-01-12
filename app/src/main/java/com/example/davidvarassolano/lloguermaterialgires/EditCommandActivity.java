@@ -67,7 +67,7 @@ public class EditCommandActivity extends AppCompatActivity {
             id = intent.getStringExtra("id");
             Nomcomanda.setText("Nom de la comanda: " +nomcomanda);
         }
-        Toast.makeText(EditCommandActivity.this,id,Toast.LENGTH_SHORT).show();
+
 
         //Carreguem comanda de la base de dades:
         db.collection("Comandas").document(id).collection("items").addSnapshotListener(this
