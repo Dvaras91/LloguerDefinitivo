@@ -23,7 +23,7 @@ public class AdaptListEditComand extends ArrayAdapter {
         View result = convertView;
         if (result==null){
             LayoutInflater inflater =LayoutInflater.from( getContext() );
-            result = inflater.inflate( R.layout.itemllistmaterial,null );
+            result = inflater.inflate( R.layout.itemedit,null );
 
         }
         CheckBox item_comand = (CheckBox) result.findViewById( R.id.check_item );
