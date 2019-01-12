@@ -13,4 +13,6 @@
     <string name="Entra">Entra</string>
     <string name="user">Usuari:</string>
     <string name="Pass">Contrasenya:</string>
+    <string name="cannot_write">no es pot llegir</string>
+    <string name="cannot_reat">no puede leer la lista</string>
 </resources>

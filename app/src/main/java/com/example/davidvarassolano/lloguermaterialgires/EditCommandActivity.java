@@ -26,12 +26,20 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 public class EditCommandActivity extends AppCompatActivity {
+
+    private static final String FILENAME = "rent_list";
+    private static final int MAX_BYTES = 8000;
 
     private static final String USUARI = "usuari";
     private static final String DATA = "data";
@@ -51,6 +59,55 @@ public class EditCommandActivity extends AppCompatActivity {
     String nomcomanda,id;
     ListView listItem;
 
+
+    public void save_list (){
+        try {
+            FileOutputStream fos= openFileOutput(FILENAME, MODE_PRIVATE); //Obtenemos el fichero
+            for (int i=0; i < listmaterial.size(); i++){
+                Itemcomandprop it = listmaterial.get(i);
+                String line = String.format("%s;%b\n", it.getText(), it.isChecked() );
+                fos.write(line.getBytes());
+            }
+            fos.close();
+        } catch (FileNotFoundException e) { //Detecta errores a la hora de obtener el fichero
+            Log.e("LloguerDefinitvo","save_list: FileNotFoundException");
+            Toast.makeText(this, R.string.cannot_write, Toast.LENGTH_SHORT).show();
+
+        } catch (IOException e) {
+            Log.e("LloguerDefinitvo","save_list: IOException");
+            Toast.makeText(this, R.string.cannot_write, Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
+    public void read_list (){
+        listmaterial = new ArrayList<>();
+        try {
+            FileInputStream fis= openFileInput(FILENAME);
+            byte buffer [] = new byte[MAX_BYTES];
+            int nread = fis.read(buffer);
+            String content =  new String(buffer, 0, nread);
+            String[] lines = content.split("\n");
+            for (String line : lines) {
+                String[] parts = line.split(";");
+                listmaterial.add(new Itemcomandprop(parts[0], parts[1].equals("true")));
+            }
+            fis.close();
+        } catch (FileNotFoundException e) { //para cuando no encuentra el fichero, primer uso
+            Log.e("LloguerDefinitivo", "read_list: FileNotFoundException");
+        } catch (IOException e) {
+            Log.e("LloguerDefinitvo","read_list: IOException");
+            Toast.makeText(this, R.string.cannot_reat, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        save_list();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +116,7 @@ public class EditCommandActivity extends AppCompatActivity {
         Nomcomanda = findViewById(R.id.lbl_nomcomanda);
         listItem = findViewById(R.id.list_items);
         Preu = findViewById(R.id.lbl_preupagar);
+        
 
         //Info que ve de l' activitat NormalUser:
         intent = getIntent();
@@ -68,6 +126,7 @@ public class EditCommandActivity extends AppCompatActivity {
             Nomcomanda.setText("Nom de la comanda: " +nomcomanda);
         }
         Toast.makeText(EditCommandActivity.this,id,Toast.LENGTH_SHORT).show();
+
 
         //Carreguem comanda de la base de dades:
         db.collection("Comandas").document(id).collection("items").addSnapshotListener(this
@@ -89,7 +148,6 @@ public class EditCommandActivity extends AppCompatActivity {
                     }
                 });
 
-
         listmaterial = new ArrayList<>();
         //listItems.add("Casc");
         //listItems.add("Neopreno");
@@ -106,8 +164,9 @@ public class EditCommandActivity extends AppCompatActivity {
 
     }
 
+
     public void addItems(View view) {
-        //Afegir elements a la comanda
+                //Afegir elements a la comanda
         Intent intent = new Intent(this,ListMaterialActivity.class);
         startActivityForResult(intent,EDIT_NAME);
 
@@ -135,6 +194,7 @@ public class EditCommandActivity extends AppCompatActivity {
                         i++;
 
                     }
+
                     //noumaterial = data.getStringExtra( "material" );
                     //listmaterial.add(new Itemcomandprop( noumaterial ));
 
