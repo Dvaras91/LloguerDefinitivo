@@ -103,6 +103,16 @@ public class EditCommandActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         } );
+        listItem.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                //Modificar quantitat el·liminar element.
+                Builder builder = new Builder();
+                builder.show(getFragmentManager(),"Modificar cantidad");
+
+                return true;
+            }
+        });
 
     }
 

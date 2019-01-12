@@ -42,6 +42,7 @@ public class ListMaterialActivity extends AppCompatActivity {
                 }
                 list_item.clear();
                 for (DocumentSnapshot doc: documentSnapshots){
+
                     list_item.add(new Itemcomandprop(doc.getString("nombre"),doc.getDouble("cantidad").intValue(),doc.getDouble("precio").intValue()));
                 }
                 adapter.notifyDataSetChanged();
