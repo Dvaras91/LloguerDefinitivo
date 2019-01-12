@@ -26,6 +26,10 @@ public class AccesUserActivity extends AppCompatActivity {
         Usuari = findViewById(R.id.txt_usuari);
         Pass = findViewById(R.id.txt_psw);
 
+        //Ponemos icono en el action bar
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
 
     }
 

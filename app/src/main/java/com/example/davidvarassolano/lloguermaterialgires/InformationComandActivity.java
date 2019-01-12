@@ -35,6 +35,10 @@ public class InformationComandActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_information_comand);
+        //Icone:
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
         Nomcomanda = findViewById(R.id.lbl_nom);
         Precio = findViewById(R.id.lbl_euro);
         listmaterial = findViewById(R.id.list_material);

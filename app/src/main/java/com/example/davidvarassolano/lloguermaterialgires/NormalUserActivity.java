@@ -52,6 +52,11 @@ public class NormalUserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_normal_user);
+
+        //Icone:
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
         ListEntregades = (ListView)findViewById(R.id.list_entregades);
         ListPendents = (ListView)findViewById(R.id.list_pendents);
         listcomandes = new ArrayList<>(  );
