@@ -2,16 +2,19 @@ package com.example.davidvarassolano.lloguermaterialgires;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.LauncherActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -165,8 +168,7 @@ public class EditCommandActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 //Modificar quantitat el·liminar element.
-                Builder builder = new Builder();
-                builder.show(getFragmentManager(),"Modificar cantidad");
+                modificarquantitatitems(position);
 
                 return true;
             }
@@ -353,6 +355,38 @@ public class EditCommandActivity extends AppCompatActivity {
         }
         String preucomanda = Integer.toString(preu);
         Preu.setText(preucomanda+"€");
+    }
+    public void modificarquantitatitems (final int position){
+        //Metode per modificar la quantitat que volem llogar
+        AlertDialog.Builder modificar = new AlertDialog.Builder(this);
+        modificar.setTitle("Modificar quantitat de material")
+                .setMessage("Posa la nova quantitat que vols llogar:");
+        final EditText edquantitat = new EditText(this);
+        edquantitat.setInputType(InputType.TYPE_CLASS_NUMBER);
+        modificar.setView(edquantitat);
+        modificar.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                final String quantitat = edquantitat.getText().toString();
+                if (quantitat.isEmpty()){
+                    return;
+                } else {
+                Toast.makeText(EditCommandActivity.this,edquantitat.getText().toString(),Toast.LENGTH_SHORT).show();
+
+                listmaterial.get(position).setNumtotal(Integer.parseInt(edquantitat.getText().toString()));
+                adapter.notifyDataSetChanged();
+                }
+
+            }
+        })
+                .setNegativeButton("Cancel·lar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        modificar.show();
+
     }
 
 }

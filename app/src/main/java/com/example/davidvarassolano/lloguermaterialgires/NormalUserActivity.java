@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -110,6 +111,7 @@ public class NormalUserActivity extends AppCompatActivity {
         novacomanda.setMessage("Introduïu el nom de la comanda");
         novacomanda.setTitle("Comanda");
         final EditText Nomcomanda = new EditText(this);
+
         novacomanda.setView(Nomcomanda);
         novacomanda.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             @Override
