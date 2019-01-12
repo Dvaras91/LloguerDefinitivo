@@ -5,6 +5,8 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,6 +40,7 @@ import java.util.Map;
 
 public class EditCommandActivity extends AppCompatActivity {
 
+
     private static final String FILENAME = "rent_list";
     private static final int MAX_BYTES = 8000;
 
@@ -53,6 +56,9 @@ public class EditCommandActivity extends AppCompatActivity {
     private static final int EDIT_NAME = 1; //Anar a ListMaterialActivity per sel·lecionar més items a la comanda
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ArrayList<Itemcomandprop> listmaterial;
+
+
+
 
     Intent intent;
     TextView Nomcomanda, Preu;
@@ -112,6 +118,9 @@ public class EditCommandActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_command);
+        //Icone:
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
         //Referències:
         Nomcomanda = findViewById(R.id.lbl_nomcomanda);
         listItem = findViewById(R.id.list_items);

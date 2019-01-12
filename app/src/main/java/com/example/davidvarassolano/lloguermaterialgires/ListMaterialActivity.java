@@ -30,6 +30,10 @@ public class ListMaterialActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_material);
 
+        //Icone:
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
         //list_material = findViewById(R.id.list_material);
         Intent intent = getIntent();
         list_item = new ArrayList<>();
