@@ -94,7 +94,7 @@ public class EditCommandActivity extends AppCompatActivity {
         //listItems.add("Casc");
         //listItems.add("Neopreno");
         //listItems.add("Arnes");
-        adapter = new AdaptListEditComand(this,android.R.layout.simple_list_item_1,listmaterial);
+        adapter = new AdaptListEditComand(this,R.layout.itemedit,listmaterial);
         listItem.setAdapter(adapter);
         listItem.setOnItemClickListener( new AdapterView.OnItemClickListener() {
             @Override
@@ -129,9 +129,18 @@ public class EditCommandActivity extends AppCompatActivity {
                     precio = data.getIntegerArrayListExtra("precio");
 
                     int i = 0;
+                    boolean coincide = false;
+                    //Agregar material en la lista. Si el material ya existe, no lo agregará
                     while (i<material.size()){
-
-                        listmaterial.add( new Itemcomandprop( material.get( i ) ,cantidad.get(i),precio.get(i)) );
+                        coincide = false;
+                        for (int b = 0;b<=listmaterial.size()-1;b++){
+                            String item = listmaterial.get(b).getText().toString();
+                            if (material.get(i).equals(item)){
+                                coincide = true;
+                            }
+                        }
+                        if (!coincide){
+                        listmaterial.add( new Itemcomandprop( material.get( i ) ,cantidad.get(i),precio.get(i)) );}
                         i++;
 
                     }
