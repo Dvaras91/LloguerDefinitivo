@@ -128,10 +128,11 @@ public class NormalUserActivity extends AppCompatActivity {
                 }
                 else {
                     Toast.makeText(NormalUserActivity.this,"Creant comanda"+" "+nomcomanda,Toast.LENGTH_SHORT).show();
+                    novacomanda(nomcomanda,"hola");
                     //Crear la nova activitat
                     //DocumentReference comRef = db.collection("Comandas").document(nomcomanda);
                     // Pensar millor com ho faig
-                    Map<String,Object> com = new HashMap<>();
+                    /*Map<String,Object> com = new HashMap<>();
                     com.put(NOMBRE,nomcomanda);
                     com.put(USUARI,"paco");
                     com.put(ENTREGA,false);
@@ -146,7 +147,7 @@ public class NormalUserActivity extends AppCompatActivity {
                             Toast.makeText(NormalUserActivity.this,"Error",Toast.LENGTH_SHORT).show();
                             Log.e("LloguerMaterialGires","Error Firebase: "+e.toString());
                         }
-                    });
+                    });*/
 
 
                 }
