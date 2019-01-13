@@ -172,6 +172,7 @@ public class EditCommandActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
                 listmaterial.get( pos ).toggleChecked();
+
                 adapter.notifyDataSetChanged();
             }
         } );
