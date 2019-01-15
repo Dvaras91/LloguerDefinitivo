@@ -2,7 +2,9 @@ package com.example.davidvarassolano.lloguermaterialgires;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,6 +33,7 @@ import java.util.Map;
 public class NormalUserActivity extends AppCompatActivity {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private static final String NOMBRE = "name";
     private static final String ENTREGA = "entrega";
@@ -44,7 +47,7 @@ public class NormalUserActivity extends AppCompatActivity {
     private ListCRecollirAdapt adapterrec;
     private ArrayList<Comanda> listcomandes;
     private ArrayList <Comanda> listcomrecollir;
-
+   //int number = 0;
 
 
 
@@ -62,25 +65,25 @@ public class NormalUserActivity extends AppCompatActivity {
         listcomandes = new ArrayList<>(  );
         listcomrecollir = new ArrayList<>();
 
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById( R.id.refresh );
+        swipeRefreshLayout.setOnRefreshListener( new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                RefreshListReturn();
+                RefreshListPrep();
+                new Handler(  ).postDelayed( new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing( false );
+                    }
+                },4000 );
+            }
+        } );
+
         // en la pantalla d' usuari s' haura d' ingressar el nom identificador que serà el mateix que
         // posarem en el segon whereEqualto
-        db.collection("Comandas").whereEqualTo("entrega",true).whereEqualTo("usuari","paco").addSnapshotListener(this, new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                if (e!=null){
-                    Log.e("LloguerMaterialGires","Firestore Error:"+e.toString());
-                    return;
-                }
-                listcomandes.clear();
-                for (DocumentSnapshot doc: documentSnapshots){
-                    Comanda comanda = new Comanda(doc.getString("name"),doc.getString("usuari"),doc.getString("data"));
-                    comanda.setId(doc.getId());
-                    listcomandes.add(comanda);
-                }
-                adapter.notifyDataSetChanged();
-            }
-        });
 
+        RefreshListReturn();
         // comandes per recollir de la base de dades
         RefreshListPrep();
         //listcomrecollir.add("Savassona");
@@ -209,6 +212,24 @@ public class NormalUserActivity extends AppCompatActivity {
                     listcomrecollir.add(comanda);
                 }
                 adapterrec.notifyDataSetChanged();
+            }
+        });
+    }
+    public void RefreshListReturn(){
+        db.collection("Comandas").whereEqualTo("entrega",true).whereEqualTo("usuari","paco").addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                if (e!=null){
+                    Log.e("LloguerMaterialGires","Firestore Error:"+e.toString());
+                    return;
+                }
+                listcomandes.clear();
+                for (DocumentSnapshot doc: documentSnapshots){
+                    Comanda comanda = new Comanda(doc.getString("name"),doc.getString("usuari"),doc.getString("data"));
+                    comanda.setId(doc.getId());
+                    listcomandes.add(comanda);
+                }
+                adapter.notifyDataSetChanged();
             }
         });
     }
