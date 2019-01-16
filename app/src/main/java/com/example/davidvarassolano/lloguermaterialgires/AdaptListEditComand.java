@@ -37,7 +37,7 @@ public class AdaptListEditComand extends ArrayAdapter {
         }else{
             item_comand.setPaintFlags(item_comand.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG );
         }
-        String cantidad = Integer.toString(item.getNumtotal());
+        String cantidad = Integer.toString(item.getNumlloguer());
         item_quantitat.setText( cantidad);
 
         return result;

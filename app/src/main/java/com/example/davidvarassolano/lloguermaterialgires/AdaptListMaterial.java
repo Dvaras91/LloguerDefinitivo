@@ -27,14 +27,17 @@ public class AdaptListMaterial extends ArrayAdapter<Itemcomandprop> {
             result = inflater.inflate(R.layout.itemllistmaterial,null);
         }
         final TextView txt_cantidad = result.findViewById(R.id.txt_quantitat);
-        CheckBox item_check = result.findViewById(R.id.check_item);
+        final CheckBox item_check = result.findViewById(R.id.check_item);
         Button btn_add = result.findViewById(R.id.btn_add);
         Button btn_res = result.findViewById(R.id.btn_rest);
         final Itemcomandprop item = getItem(position);
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                item_check.setChecked(true);
+                item.setChecked(true);
                 if (item.getNumlloguer()>=item.getNumtotal()){
+
 
                 } else {
                 item.setNumlloguer(item.getNumlloguer()+1);
@@ -44,7 +47,13 @@ public class AdaptListMaterial extends ArrayAdapter<Itemcomandprop> {
         btn_res.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (item.getNumlloguer()==1){
+                    item_check.setChecked(false);
+                    item.setChecked(false);
+                }
                 if (item.getNumlloguer()<=0){
+                    item_check.setChecked(false);
+                    item.setChecked(false);
 
                 } else {
                     item.setNumlloguer(item.getNumlloguer()-1);

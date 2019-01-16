@@ -31,6 +31,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.io.FileInputStream;
@@ -61,6 +62,7 @@ public class EditCommandActivity extends AppCompatActivity {
     private static final int EDIT_NAME = 1; //Anar a ListMaterialActivity per sel·lecionar més items a la comanda
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ArrayList<Itemcomandprop> listmaterial;
+    private ArrayList<Itemcomandprop> list_item;
 
 
 
@@ -153,7 +155,7 @@ public class EditCommandActivity extends AppCompatActivity {
                         }
                         listmaterial.clear();
                         for (DocumentSnapshot doc: documentSnapshots){
-                            listmaterial.add(new Itemcomandprop(doc.getString("nombre"),doc.getDouble("cantidad").intValue(),doc.getDouble("precio").intValue()));
+                            listmaterial.add(new Itemcomandprop(doc.getString("nombre"),doc.getDouble("cantidad").intValue(),1,doc.getDouble("precio").intValue()));
                             //listmaterial.add(new Itemcomandprop(doc.getString("nombre"),doc.getDouble("cantidad").intValue()));
                         }
                         adapter.notifyDataSetChanged();
@@ -243,6 +245,7 @@ public class EditCommandActivity extends AppCompatActivity {
         }}
 
     public void deleteItems(View view) {
+        //final WriteBatch batch = db.batch(); Provar de fer - ho amb un batch
         int i = 0;
         while (i<listmaterial.size()){
             if (listmaterial.get( i ).isChecked()){
@@ -318,7 +321,41 @@ public class EditCommandActivity extends AppCompatActivity {
 
     }
     public void CompleteEraseDocument(String fecha){
+        //Prova transacció:
+        /*for (int d = 0;d<listmaterial.size();d++){
+            DocumentReference DocCatalogo = db.collection("Catalogo").document(listmaterial.get(d).);
+        }
+        DocumentReference DocCatalogo = db.collection("Catalogo").document();
+        db.runTransaction(new Transaction.Function<Integer>() {
+            @Nullable
+            @Override
+            public Integer apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                //DocumentSnapshot snapshot = transaction.get(DocCatalogo);
+                for (DocumentSnapshot doc:)
+                return null;
+            }
+        });*/
+        /*list_item = new ArrayList<>();
+        db.collection("Catalogo").addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                if (e != null){
+                    Log.e("LloguerMaterialGires","Firestore Error: "+e.toString());
+                    return;
+                }
+                list_item.clear();
+                for (DocumentSnapshot doc: documentSnapshots){
+
+                    list_item.add(new Itemcomandprop(doc.getString("nombre"),doc.getDouble("cantidad").intValue()));
+                }
+
+            }
+        });*/
+
+
+
         DocumentReference comRef = db.collection( "Comandas" ).document(  );
+
         WriteBatch batch = db.batch();
         Map<String,Object> comand = new HashMap<>(  );
         comand.put( USUARI,"paco" );
@@ -327,13 +364,19 @@ public class EditCommandActivity extends AppCompatActivity {
         comand.put( NOM,nomcomanda );
         batch.set(comRef, comand);
 
-        for (int d = 0;d < listmaterial.size(); d++) {
-            Map<String,Object> items = new HashMap<>(  );
 
+
+        for (int d = 0;d < listmaterial.size(); d++) {
+            DocumentReference comCatalogo = db.collection("Catalogo").document(listmaterial.get(d).getText());
+            Map<String,Object> cantidad = new HashMap<>();
+            Map<String,Object> items = new HashMap<>(  );
+            cantidad.put("cantidad",(listmaterial.get(d).getNumtotal()-listmaterial.get(d).getNumlloguer()));
             items.put( NOMBRE, listmaterial.get( d ).getText() );
-            items.put( CANTIDAD, listmaterial.get( d ).getNumtotal() );
+            items.put( CANTIDAD, listmaterial.get( d ).getNumlloguer() );
             items.put(PRECIOITEM,listmaterial.get(d).getPrecio());
             batch.set(comRef.collection("items").document(), items);
+            batch.update(comCatalogo,"cantidad",cantidad);
+
         }
 
         batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -414,7 +457,7 @@ public class EditCommandActivity extends AppCompatActivity {
                                 //Toast.makeText(EditCommandActivity.this,document.getString("cantidad")
                                 int quant =  document.getDocuments().get(0).getDouble("cantidad").intValue();
                                 if (quant>=Integer.parseInt(edquantitat.getText().toString())){
-                                    listmaterial.get(position).setNumtotal(Integer.parseInt(edquantitat.getText().toString()));
+                                    listmaterial.get(position).setNumlloguer(Integer.parseInt(edquantitat.getText().toString()));
                                     adapter.notifyDataSetChanged();
                                 } else {
                                     Toast.makeText(EditCommandActivity.this,"Has sobrepassat la quantitat màxima",Toast.LENGTH_SHORT).show();

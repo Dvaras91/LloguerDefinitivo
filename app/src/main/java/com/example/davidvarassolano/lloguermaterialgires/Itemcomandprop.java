@@ -13,6 +13,7 @@ public class Itemcomandprop {
         this.precio = precio;
     }
 
+
     public Itemcomandprop(String text, int numtotal, int precio) {
         this.text = text;
         this.numtotal = numtotal;
